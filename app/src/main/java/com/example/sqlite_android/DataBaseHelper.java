@@ -50,6 +50,25 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    public boolean deleteOne(CustomerModel customerModel) {
+        // Find customerModel in the database. If found, delete it and return true.
+        // If not found, return false
+
+        // Data Access Object (DAO) style.
+        // Separates functions from app, is best practice
+        SQLiteDatabase db = this.getWritableDatabase();
+        String queryString = "DELETE FROM " + CUSTOMER_TABLE + " WHERE " + COLUMN_ID + " = " + customerModel.getId();
+
+        Cursor cursor = db.rawQuery(queryString, null);
+
+        if (cursor.moveToFirst()) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
     public List<CustomerModel> getEveryone() {
         List<CustomerModel> returnList = new ArrayList<>();
 
