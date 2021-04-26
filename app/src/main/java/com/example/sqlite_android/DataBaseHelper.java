@@ -1,5 +1,6 @@
 package com.example.sqlite_android;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -24,6 +25,25 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         String createTableStatement = "CREATE TABLE " + CUSTOMER_TABLE + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_CUSTOMER_NAME + " TEXT, " + COLUMN_CUSTOMER_AGE + " INT, " + COLUMN_ACTIVE_CUSTOMER + " BOOL)";
 
         db.execSQL(createTableStatement); // db comes from a parameter that we pass in here
+    }
+
+    public boolean addOne(CustomerModel customerModel) {
+        SQLiteDatabase  db = this.getWritableDatabase(); // One and only database we write to
+        ContentValues cv = new ContentValues(); // Kinda like HashMap! Key value pair
+
+        // No need for id! Autoincrement
+        cv.put(COLUMN_CUSTOMER_NAME, customerModel.getName());
+        cv.put(COLUMN_CUSTOMER_AGE, customerModel.getAge());
+        cv.put(COLUMN_ACTIVE_CUSTOMER, customerModel.isActive());
+
+        long insert = db.insert(CUSTOMER_TABLE, null, cv); // Nullcolumnhack! It's used on many operations. Optional, may be null. Could put in a column name or null.
+        // Insert is success variable
+        if (insert == -1) {
+            return false;
+        }
+        else {
+            return true;
+        }
     }
 
     // This is called if the database version number changes. It prevents previous users apps from breaking when you change the database design.
