@@ -2,10 +2,14 @@ package com.example.sqlite_android;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
 
@@ -44,6 +48,38 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         else {
             return true;
         }
+    }
+
+    public List<CustomerModel> getEveryone() {
+        List<CustomerModel> returnList = new ArrayList<>();
+
+        String queryString = "SELECT * FROM " + CUSTOMER_TABLE;
+
+        SQLiteDatabase db = this.getReadableDatabase(); // This allows concurrent data if just readable
+
+        Cursor cursor = db.rawQuery(queryString, null);
+
+        if (cursor.moveToFirst()) { // moveToFirst returns true if there are items selected
+            // loop through the cursor (result set) and create new customer objects. Put them into the return list.
+            do {
+                int customerID = cursor.getInt(0); // 0 is the index
+                String customerName = cursor.getString(1);
+                int customerAge = cursor.getInt(2);
+                boolean customerActive = cursor.getInt(3) == 1 ? true: false;
+
+                CustomerModel newCustomer = new CustomerModel(customerID, customerName, customerAge, customerActive);
+                returnList.add(newCustomer);
+
+            } while (cursor.moveToNext());
+        }
+        else {
+            // Do not add anything to the list. We don't really need it but yeah
+        }
+
+        // Close cursor and db when done
+        cursor.close();
+        db.close();
+        return returnList;
     }
 
     // This is called if the database version number changes. It prevents previous users apps from breaking when you change the database design.
