@@ -11,7 +11,7 @@ public class CustomerModel {
      */
 
     // First, make the fields.
-    private int id
+    private int id;
     private String name;
     private int age;
     private boolean isActive;
