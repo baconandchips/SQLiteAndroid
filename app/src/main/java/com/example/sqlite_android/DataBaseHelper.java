@@ -14,8 +14,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     // This is called the first time a database is accessed. There should be code in here to create a new database.
     @Override
-    public void onCreate(SQLiteDatabase sqLiteDatabase) {
+    public void onCreate(SQLiteDatabase db) {
+        String createTableStatement = "";
 
+        db.execSQL(createTableStatement); // db comes from a parameter that we pass in here
     }
 
     // This is called if the database version number changes. It prevents previous users apps from breaking when you change the database design.
