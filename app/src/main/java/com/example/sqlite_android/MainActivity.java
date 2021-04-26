@@ -21,6 +21,9 @@ public class MainActivity extends AppCompatActivity {
     Switch sw_activeCustomer;
     ListView lv_customerList;
 
+    ArrayAdapter customerArrayAdapter;
+    DataBaseHelper dataBaseHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +35,11 @@ public class MainActivity extends AppCompatActivity {
         et_name = findViewById(R.id.et_name);
         sw_activeCustomer = findViewById(R.id.sw_active);
         lv_customerList = findViewById(R.id.lv_customerList);
+
+        dataBaseHelper = new DataBaseHelper(MainActivity.this);
+
+        customerArrayAdapter = new ArrayAdapter<CustomerModel>(MainActivity.this, android.R.layout.simple_expandable_list_item_1, dataBaseHelper.getEveryone());
+        lv_customerList.setAdapter(customerArrayAdapter);
 
         // button listeners for the add and view all buttons
         btn_add.setOnClickListener(new View.OnClickListener() {
@@ -55,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
 
                 Toast.makeText(MainActivity.this, "Success = " + success, Toast.LENGTH_SHORT).show();
 
+                customerArrayAdapter = new ArrayAdapter<CustomerModel>(MainActivity.this, android.R.layout.simple_expandable_list_item_1, dataBaseHelper.getEveryone());
+                lv_customerList.setAdapter(customerArrayAdapter);
             }
         });
 
@@ -63,9 +73,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 DataBaseHelper dataBaseHelper = new DataBaseHelper(MainActivity.this);
-                List<CustomerModel> everyone = dataBaseHelper.getEveryone();
+                // List<CustomerModel> everyone = dataBaseHelper.getEveryone();
 
-                ArrayAdapter customerArrayAdapter = new ArrayAdapter<CustomerModel>(MainActivity.this, android.R.layout.simple_expandable_list_item_1, everyone);
+                customerArrayAdapter = new ArrayAdapter<CustomerModel>(MainActivity.this, android.R.layout.simple_expandable_list_item_1, dataBaseHelper.getEveryone());
                 lv_customerList.setAdapter(customerArrayAdapter);
 
                 // Toast.makeText(MainActivity.this, everyone.toString(), Toast.LENGTH_SHORT).show();
