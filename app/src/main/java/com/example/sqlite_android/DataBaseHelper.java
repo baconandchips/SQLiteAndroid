@@ -8,6 +8,8 @@ import androidx.annotation.Nullable;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
 
+    public static final String CUSTOMER_TABLE = "CUSTOMER_TABLE";
+
     public DataBaseHelper(@Nullable Context context) {
         super(context, "customer.db", null, 1);
     }
@@ -15,7 +17,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     // This is called the first time a database is accessed. There should be code in here to create a new database.
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTableStatement = "";
+        String createTableStatement = "CREATE TABLE " + CUSTOMER_TABLE + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, )";
 
         db.execSQL(createTableStatement); // db comes from a parameter that we pass in here
     }
